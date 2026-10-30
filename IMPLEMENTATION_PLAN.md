@@ -88,7 +88,7 @@ Every source module in `app/` has a 1:1 mirrored unit test file in `tests/` enfo
   - `app/guardrails/pii_redactor.py` ↔ `tests/guardrails/test_pii_redactor.py`
   - `app/observability/logger.py` ↔ `tests/observability/test_logger.py`
   - `app/observability/tracing.py` ↔ `tests/observability/test_tracing.py`
-- [ ] **Delivery 2: Synthetic Cars Catalogue, Persistent Session Store, Compaction & Async Memory**
+- [x] **Delivery 2: Synthetic Cars Catalogue, Persistent Session Store, Compaction & Async Memory**
   - `app/data/synthetic_catalog.py` ↔ `tests/data/test_synthetic_catalog.py`
   - `app/memory/session_store.py` ↔ `tests/memory/test_session_store.py`
   - `app/memory/compaction.py` ↔ `tests/memory/test_compaction.py`
