@@ -1,17 +1,24 @@
-name: AutoDeal Copilot CI & Golden Evaluation Pipeline
+name: AutoDeal Copilot CI Pipeline
 
 on:
   push:
     branches: ["main", "master", "**"]
   pull_request:
     branches: ["main", "master"]
+  workflow_dispatch:
+    inputs:
+      run_live_eval:
+        description: "Manually run Live Gemini ADK Golden Evaluation Suite (requires GEMINI_API_KEY / GCP auth)"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
 
 jobs:
-  lint-test-and-evaluate:
-    name: Ruff Lint, Pytest Unit Suite & Golden Evaluation Harness
+  lint-and-unit-tests:
+    name: Ruff Lint & Pytest Unit Suite
     runs-on: ubuntu-latest
 
     steps:
@@ -34,18 +41,31 @@ jobs:
       - name: Run Ruff Formatter Check
         run: ruff format --check .
 
-      - name: Run Pytest Unit & 19-Criterion Rubric Compliance Suite
+      - name: Run Pytest Unit & Rubric Compliance Suite
         run: pytest -v
 
-      - name: Run ADK Runner & Rubric Judge Evaluation Suite
-        run: |
-          python -m evals.run_evals --mode runner --evalset-path evals/autodeal_golden.evalset.json --config-path evals/eval_config.json
+  manual-golden-evaluation:
+    name: Manual Live Gemini ADK Golden Evaluation
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_live_eval == true }}
 
-      - name: Run Live Gemini LLM-as-a-Judge Evaluation (When GEMINI_API_KEY Configured)
-        if: ${{ secrets.GEMINI_API_KEY != '' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run Live Gemini ADK Golden Set Evaluation
         env:
           GOOGLE_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          AUTODEAL_EVAL_LIVE: "1"
         run: |
-          python -m evals.run_evals --mode live --evalset-path evals/autodeal_golden.evalset.json --config-path evals/eval_config.json
+          python -m evals.run_evals --confirm-live-eval

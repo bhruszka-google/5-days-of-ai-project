@@ -1,4 +1,4 @@
-.PHONY: install lint format test eval eval-live eval-adk terraform-init terraform-plan adk-run agents-cli-deploy
+.PHONY: install lint format test eval-validate eval eval-adk terraform-init terraform-plan adk-run agents-cli-deploy
 
 PYTHON := .venv/bin/python
 PYTEST := .venv/bin/pytest
@@ -19,11 +19,11 @@ format:
 test:
 	$(PYTEST) -v
 
-eval:
-	$(PYTHON) -m evals.run_evals --mode runner --evalset-path evals/autodeal_golden.evalset.json --config-path evals/eval_config.json
+eval-validate:
+	$(PYTHON) -m evals.run_evals --validate-only
 
-eval-live:
-	AUTODEAL_EVAL_LIVE=1 $(PYTHON) -m evals.run_evals --mode live --evalset-path evals/autodeal_golden.evalset.json --config-path evals/eval_config.json
+eval:
+	$(PYTHON) -m evals.run_evals --confirm-live-eval --mode live --evalset-path evals/autodeal_golden.evalset.json --config-path evals/eval_config.json
 
 eval-adk:
 	$(ADK) eval app evals/autodeal_golden.evalset.json --config_file_path evals/eval_config.json --print_detailed_results
