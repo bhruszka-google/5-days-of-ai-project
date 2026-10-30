@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autodeal-copilot"
+version = "0.1.0"
+description = "Enterprise Car Salesman Top-3 Offer Copilot built with Google ADK, Gemini 3 models, OpenTelemetry, and Google Cloud."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "google-adk>=2.0.0",
+    "google-genai>=1.0.0",
+    "pydantic>=2.0.0",
+    "python-json-logger>=2.0.7",
+    "opentelemetry-api>=1.20.0",
+    "opentelemetry-sdk>=1.20.0",
+    "google-cloud-secret-manager>=2.16.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "ruff>=0.9.0",
+    "pre-commit>=4.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+src = ["app", "tests", "evals"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.agents-cli]
+template = "adk"
+deployment_target = "cloud_run"
+agent_directory = "app"
