@@ -1,0 +1,41 @@
+name: AutoDeal Copilot CI & Golden Evaluation Pipeline
+
+on:
+  push:
+    branches: ["main", "master", "**"]
+  pull_request:
+    branches: ["main", "master"]
+
+permissions:
+  contents: read
+
+jobs:
+  lint-test-and-evaluate:
+    name: Ruff Lint, Pytest Unit Suite & Golden Evaluation Harness
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run Ruff Linter
+        run: ruff check .
+
+      - name: Run Ruff Formatter Check
+        run: ruff format --check .
+
+      - name: Run Pytest Unit & 19-Criterion Rubric Compliance Suite
+        run: pytest -v
+
+      - name: Run Automated Golden Dataset Evaluation Suite
+        run: python -m evals.run_evals
