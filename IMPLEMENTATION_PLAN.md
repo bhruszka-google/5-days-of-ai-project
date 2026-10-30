@@ -100,7 +100,7 @@ Every source module in `app/` has a 1:1 mirrored unit test file in `tests/` enfo
 - [x] **Delivery 4: Guardrails Plugin & Sales Manager Human-in-the-Loop (HITL) Hook**
   - `app/guardrails/hitl.py` ↔ `tests/guardrails/test_hitl.py`
   - `app/guardrails/policy_plugin.py` ↔ `tests/guardrails/test_policy_plugin.py`
-- [ ] **Delivery 5: Multi-Agent Orchestration, Strategic Model Router & Constitutional Prompts**
+- [x] **Delivery 5: Multi-Agent Orchestration, Strategic Model Router & Constitutional Prompts**
   - `app/prompts/constitution.py` ↔ `tests/prompts/test_constitution.py`
   - `app/routing/model_router.py` ↔ `tests/routing/test_model_router.py`
   - `app/agent.py` ↔ `tests/test_agent.py`
