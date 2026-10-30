@@ -93,7 +93,7 @@ Every source module in `app/` has a 1:1 mirrored unit test file in `tests/` enfo
   - `app/memory/session_store.py` ↔ `tests/memory/test_session_store.py`
   - `app/memory/compaction.py` ↔ `tests/memory/test_compaction.py`
   - `app/memory/async_memory.py` ↔ `tests/memory/test_async_memory.py`
-- [ ] **Delivery 3: Strict JSON Schemas & Dealership Tools (With Guided Error Recovery)**
+- [x] **Delivery 3: Strict JSON Schemas & Dealership Tools (With Guided Error Recovery)**
   - `app/tools/schemas.py` ↔ `tests/tools/test_schemas.py`
   - `app/tools/inventory_tools.py` ↔ `tests/tools/test_inventory_tools.py`
   - `app/tools/financing_tools.py` ↔ `tests/tools/test_financing_tools.py`
