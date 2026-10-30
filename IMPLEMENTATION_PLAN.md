@@ -104,6 +104,7 @@ Every source module in `app/` has a 1:1 mirrored unit test file in `tests/` enfo
   - `app/prompts/constitution.py` ↔ `tests/prompts/test_constitution.py`
   - `app/routing/model_router.py` ↔ `tests/routing/test_model_router.py`
   - `app/agent.py` ↔ `tests/test_agent.py`
-- [ ] **Delivery 6: Golden Evaluation Suite, Terraform IaC, CI/CD & Cloud Deployment**
+- [x] **Delivery 6: Golden Evaluation Suite, Terraform IaC, CI/CD & Cloud Deployment**
   - `evals/golden_dataset.json` & `evals/run_evals.py` ↔ `tests/test_evals.py`
-  - `deployment/terraform/`, `Dockerfile`, `.github/workflows/ci_eval.yml`, `README.md` ↔ `tests/test_rubric_compliance.py`
+  - `app/fast_api_app.py` ↔ `tests/test_fast_api_app.py`
+  - `deployment/terraform/`, `terraform/`, `Dockerfile`, `Makefile`, `.github/workflows/ci_eval.yml`, `README.md` ↔ `tests/test_rubric_compliance.py`
