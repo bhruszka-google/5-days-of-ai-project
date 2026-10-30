@@ -37,5 +37,15 @@ jobs:
       - name: Run Pytest Unit & 19-Criterion Rubric Compliance Suite
         run: pytest -v
 
-      - name: Run Automated Golden Dataset Evaluation Suite
-        run: python -m evals.run_evals
+      - name: Run ADK Runner & Rubric Judge Evaluation Suite
+        run: |
+          python -m evals.run_evals --mode runner --evalset-path evals/autodeal_golden.evalset.json --config-path evals/eval_config.json
+
+      - name: Run Live Gemini LLM-as-a-Judge Evaluation (When GEMINI_API_KEY Configured)
+        if: ${{ secrets.GEMINI_API_KEY != '' }}
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AUTODEAL_EVAL_LIVE: "1"
+        run: |
+          python -m evals.run_evals --mode live --evalset-path evals/autodeal_golden.evalset.json --config-path evals/eval_config.json

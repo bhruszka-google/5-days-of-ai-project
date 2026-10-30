@@ -1,0 +1,438 @@
+{
+  "eval_set_id": "autodeal_copilot_golden_evalset_v1",
+  "name": "AutoDeal Copilot Enterprise Dealership Golden EvalSet",
+  "description": "Official Google ADK EvalSet measuring real LlmAgent execution, multi-step FunctionCall tool trajectories, PII scrubbing, floor-margin compliance, and Sales Manager HITL discount gating.",
+  "creation_timestamp": 1761840000.0,
+  "eval_cases": [
+    {
+      "eval_id": "eval_family_suv_trade_in",
+      "session_input": {
+        "app_name": "autodeal_copilot",
+        "user_id": "sales_consultant_01",
+        "state": {
+          "scenario_category": "multi_constraint_offer_generation_with_pii"
+        }
+      },
+      "conversation": [
+        {
+          "invocation_id": "inv_family_suv_trade_in_001",
+          "user_content": {
+            "role": "user",
+            "parts": [
+              {
+                "text": "Family of 6 looking for a 3-row hybrid SUV under $50,000 (~$650/mo budget). Customer FICO credit score is 760 with $5,000 down payment, trading in a 2021 Honda CR-V with 42,000 miles in good condition ($4,500 loan payoff). Customer SSN: 123-45-6789, email: buyer@family.org."
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "search_dealership_inventory",
+                "args": {
+                  "body_style": "suv",
+                  "max_price": 50000.0,
+                  "min_seating": 6,
+                  "fuel_type": "hybrid",
+                  "limit": 8
+                }
+              },
+              {
+                "name": "appraise_trade_in_vehicle",
+                "args": {
+                  "year": 2021,
+                  "make": "Honda",
+                  "model": "CR-V",
+                  "mileage": 42000,
+                  "condition": "good",
+                  "existing_loan_payoff": 4500.0
+                }
+              },
+              {
+                "name": "fetch_active_manufacturer_rebates",
+                "args": {
+                  "vehicle_identifier": "5TDKDRBH1TS100001",
+                  "customer_qualifiers": [
+                    "trade_in",
+                    "loyalty"
+                  ]
+                }
+              },
+              {
+                "name": "calculate_financing_and_lease_options",
+                "args": {
+                  "vehicle_identifier": "5TDKDRBH1TS100001",
+                  "down_payment": 5000.0,
+                  "trade_in_equity": 19337.5,
+                  "rebate_amount": 2000.0,
+                  "credit_score": 760,
+                  "loan_term_months": 60
+                }
+              },
+              {
+                "name": "verify_dealership_floor_margin",
+                "args": {
+                  "vehicle_identifier": "5TDKDRBH1TS100001",
+                  "proposed_selling_price": 46800.0
+                }
+              },
+              {
+                "name": "generate_customer_offer_sheet",
+                "args": {
+                  "customer_name": "Family Hybrid Buyer ([REDACTED_EMAIL])",
+                  "best_match_vin": "KM8R5DGE9TS100007",
+                  "value_pick_vin": "5TDKDRBH8RS100008",
+                  "upgrade_pick_vin": "5TDKDRBH1TS100001",
+                  "down_payment": 5000.0,
+                  "trade_in_equity": 19337.5,
+                  "credit_score": 760,
+                  "loan_term_months": 60
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "### AutoDeal Copilot — Top 3 Tailored Vehicle Offers (Customer PII Scrubbed: `[REDACTED_SSN]`, `[REDACTED_EMAIL]`)\n\n**Trade-In Appraisal Summary (2021 Honda CR-V, 42,000 mi, Good):**\n- Wholesale Allowance: **$23,837.50** | Payoff: **$4,500.00** | Net Positive Trade-In Equity: **$19,337.50**\n\n1. **Best Overall Match — 2026 Hyundai Santa Fe Hybrid SEL (`STK-2026-007` | VIN `KM8R5DGE9TS100007`)**\n   - Selling Price: **$39,400.00** (MSRP $40,950.00 | Floor-Margin Compliant: PASS)\n   - Rebates Applied: **$2,000.00** (`REB-HYBRID-BONUS-2026` + `REB-LOYALTY-TRADE`)\n   - Financing (60 mos @ **4.49% APR**, Tier 1 Super Prime 760 FICO): **$243.43/mo** | 36-Mo Lease: **$199.00/mo**\n2. **Budget / Value Pick — 2024 Toyota Highlander Hybrid LE CPO (`STK-2024-008` | VIN `5TDKDRBH8RS100008`)**\n   - Selling Price: **$37,900.00** (MSRP $43,100.00 | Floor-Margin Compliant: PASS)\n   - Rebates Applied: **$3,000.00** (Includes 60+ Day Aged Lot Bonus)\n   - Financing (60 mos @ **4.49% APR**): **$196.81/mo** | 36-Mo Lease: **$199.00/mo**\n3. **Premium / Upgrade Pick — 2026 Toyota Highlander Hybrid XLE (`STK-2026-001` | VIN `5TDKDRBH1TS100001`)**\n   - Selling Price: **$46,800.00** (MSRP $48,250.00 | Floor-Margin Compliant: PASS)\n   - Rebates Applied: **$2,000.00**\n   - Financing (60 mos @ **4.49% APR**): **$381.39/mo** | 36-Mo Lease: **$225.79/mo**\n\n*Truth-in-Lending Act (Regulation Z) Disclosure: All APR and lease estimates are subject to formal credit verification, Tier 1 Super Prime (720+) lender approval, and applicable state taxes/registration fees.*"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "eval_commuter_budget_sedan",
+      "session_input": {
+        "app_name": "autodeal_copilot",
+        "user_id": "sales_consultant_01",
+        "state": {
+          "scenario_category": "budget_sedan_financing"
+        }
+      },
+      "conversation": [
+        {
+          "invocation_id": "inv_commuter_budget_sedan_002",
+          "user_content": {
+            "role": "user",
+            "parts": [
+              {
+                "text": "Please rank the Top 3 fuel-efficient commuter sedans under $32,000 for a first-time buyer with a 695 credit score, $2,000 down payment, and a target monthly payment under $500/mo."
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "search_dealership_inventory",
+                "args": {
+                  "body_style": "sedan",
+                  "max_price": 32000.0,
+                  "min_seating": 5,
+                  "limit": 8
+                }
+              },
+              {
+                "name": "fetch_active_manufacturer_rebates",
+                "args": {
+                  "vehicle_identifier": "KMHLN4AJ7SS100017",
+                  "customer_qualifiers": [
+                    "first_time_buyer"
+                  ]
+                }
+              },
+              {
+                "name": "calculate_financing_and_lease_options",
+                "args": {
+                  "vehicle_identifier": "KMHLN4AJ7SS100017",
+                  "down_payment": 2000.0,
+                  "trade_in_equity": 0.0,
+                  "rebate_amount": 2250.0,
+                  "credit_score": 695,
+                  "loan_term_months": 60
+                }
+              },
+              {
+                "name": "verify_dealership_floor_margin",
+                "args": {
+                  "vehicle_identifier": "KMHLN4AJ7SS100017",
+                  "proposed_selling_price": 26350.0
+                }
+              },
+              {
+                "name": "generate_customer_offer_sheet",
+                "args": {
+                  "customer_name": "Commuter First-Time Buyer",
+                  "best_match_vin": "KMHLN4AJ7SS100017",
+                  "value_pick_vin": "5YFB4MDE2SS100016",
+                  "upgrade_pick_vin": "4T1DAACK9TS100014",
+                  "down_payment": 2000.0,
+                  "trade_in_equity": 0.0,
+                  "credit_score": 695,
+                  "loan_term_months": 60
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "### AutoDeal Copilot — Top 3 Commuter Sedan Offers (Tier 2 Prime 695 FICO)\n\n1. **Best Overall Match — 2025 Hyundai Elantra Hybrid Blue (`STK-2025-017` | VIN `KMHLN4AJ7SS100017`)**\n   - Selling Price: **$26,350.00** (54 MPG Combined | Floor-Margin Compliant: PASS)\n   - Rebates Applied: **$2,250.00** (`REB-HYBRID-BONUS-2026` + `REB-AGED-LOT-60D`)\n   - Financing (60 mos @ **5.79% APR**, $2,000 down): **$425.43/mo** | 36-Mo Lease: **$285.12/mo**\n2. **Budget / Value Pick — 2025 Toyota Corolla LE (`STK-2025-016` | VIN `5YFB4MDE2SS100016`)**\n   - Selling Price: **$22,990.00** (35 MPG Combined | Floor-Margin Compliant: PASS)\n   - Financing (60 mos @ **5.79% APR**, $2,000 down): **$404.05/mo** | 36-Mo Lease: **$272.40/mo**\n3. **Premium / Upgrade Pick — 2026 Toyota Camry SE Hybrid (`STK-2026-014` | VIN `4T1DAACK9TS100014`)**\n   - Selling Price: **$31,450.00** (50 MPG Combined | Floor-Margin Compliant: PASS)\n   - Rebates Applied: **$1,250.00**\n   - Financing (60 mos @ **5.79% APR**, $2,000 down): **$543.18/mo** | 36-Mo Lease: **$368.90/mo**\n\n*Truth-in-Lending Act (Regulation Z) Disclosure: Payments calculated at 5.79% APR for 60 months (Tier 2 Prime 680-719 FICO) subject to credit approval.*"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "eval_luxury_ev_lease",
+      "session_input": {
+        "app_name": "autodeal_copilot",
+        "user_id": "sales_consultant_01",
+        "state": {
+          "scenario_category": "ev_rebate_and_lease_structuring"
+        }
+      },
+      "conversation": [
+        {
+          "invocation_id": "inv_luxury_ev_lease_003",
+          "user_content": {
+            "role": "user",
+            "parts": [
+              {
+                "text": "Structure the Top 3 offers and compare 36-month lease vs 60-month financing for an all-electric EV crossover/SUV with a 780 FICO credit score, $6,000 down, and clean vehicle rebates."
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "search_dealership_inventory",
+                "args": {
+                  "body_style": "ev",
+                  "max_price": 70000.0,
+                  "min_seating": 5,
+                  "fuel_type": "ev",
+                  "limit": 8
+                }
+              },
+              {
+                "name": "fetch_active_manufacturer_rebates",
+                "args": {
+                  "vehicle_identifier": "KM8KRDAF2TS100020",
+                  "customer_qualifiers": [
+                    "clean_vehicle",
+                    "loyalty"
+                  ]
+                }
+              },
+              {
+                "name": "calculate_financing_and_lease_options",
+                "args": {
+                  "vehicle_identifier": "KM8KRDAF2TS100020",
+                  "down_payment": 6000.0,
+                  "trade_in_equity": 0.0,
+                  "rebate_amount": 4500.0,
+                  "credit_score": 780,
+                  "loan_term_months": 60
+                }
+              },
+              {
+                "name": "verify_dealership_floor_margin",
+                "args": {
+                  "vehicle_identifier": "KM8KRDAF2TS100020",
+                  "proposed_selling_price": 49950.0
+                }
+              },
+              {
+                "name": "generate_customer_offer_sheet",
+                "args": {
+                  "customer_name": "EV Crossover Buyer",
+                  "best_match_vin": "KM8KRDAF2TS100020",
+                  "value_pick_vin": "3GN7DLRP8TS100021",
+                  "upgrade_pick_vin": "KNDC4DLC6TS100019",
+                  "down_payment": 6000.0,
+                  "trade_in_equity": 0.0,
+                  "credit_score": 780,
+                  "loan_term_months": 60
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "### AutoDeal Copilot — Top 3 Electric Vehicle (EV) Lease & Finance Offers (780 FICO)\n\n1. **Best Overall Match — 2026 Hyundai Ioniq 5 SEL AWD (`STK-2026-020` | VIN `KM8KRDAF2TS100020`)**\n   - Selling Price: **$49,950.00** (MSRP $52,400.00 | Floor-Margin Compliant: PASS)\n   - Rebates Applied: **$4,500.00** (`REB-CLEAN-EV-2026` $3,500 + `REB-AGED-LOT-60D` $1,000)\n   - 36-Mo Lease (MF 0.00165, 61% Residual): **$322.84/mo** | 60-Mo Finance @ **4.49% APR**: **$735.12/mo**\n2. **Budget / Value Pick — 2026 Chevrolet Equinox EV LT (`STK-2026-021` | VIN `3GN7DLRP8TS100021`)**\n   - Selling Price: **$34,750.00** (MSRP $35,900.00 | Floor-Margin Compliant: PASS)\n   - Rebates Applied: **$3,500.00** (`REB-CLEAN-EV-2026`)\n   - 36-Mo Lease: **$199.00/mo** | 60-Mo Finance @ **4.49% APR**: **$470.41/mo**\n3. **Premium / Upgrade Pick — 2026 Kia EV9 Land AWD (`STK-2026-019` | VIN `KNDC4DLC6TS100019`)**\n   - Selling Price: **$66,800.00** (MSRP $69,900.00 | Floor-Margin Compliant: PASS)\n   - Rebates Applied: **$4,500.00**\n   - 36-Mo Lease: **$556.40/mo** | 60-Mo Finance @ **4.49% APR**: **$1,049.25/mo**\n\n*Truth-in-Lending Act (Regulation Z) Disclosure: 4.49% APR (60 mos) and 0.00165 lease money factor require Tier 1 Super Prime credit approval.*"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "eval_truck_towing_upgrade",
+      "session_input": {
+        "app_name": "autodeal_copilot",
+        "user_id": "sales_consultant_01",
+        "state": {
+          "scenario_category": "truck_towing_and_desk_discount"
+        }
+      },
+      "conversation": [
+        {
+          "invocation_id": "inv_truck_towing_upgrade_004",
+          "user_content": {
+            "role": "user",
+            "parts": [
+              {
+                "text": "Customer needs a 4WD/AWD pickup truck for towing and weekend projects with a 750 credit score and $4,000 down. Also apply a $500 promotional discount within desk authority on the best match."
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "search_dealership_inventory",
+                "args": {
+                  "body_style": "truck",
+                  "max_price": 60000.0,
+                  "min_seating": 5,
+                  "limit": 8
+                }
+              },
+              {
+                "name": "fetch_active_manufacturer_rebates",
+                "args": {
+                  "vehicle_identifier": "3TMLB5JN1TS100023",
+                  "customer_qualifiers": []
+                }
+              },
+              {
+                "name": "calculate_financing_and_lease_options",
+                "args": {
+                  "vehicle_identifier": "3TMLB5JN1TS100023",
+                  "down_payment": 4000.0,
+                  "trade_in_equity": 0.0,
+                  "rebate_amount": 0.0,
+                  "credit_score": 750,
+                  "loan_term_months": 60
+                }
+              },
+              {
+                "name": "apply_manager_special_discount",
+                "args": {
+                  "vehicle_identifier": "3TMLB5JN1TS100023",
+                  "requested_discount_amount": 500.0,
+                  "reason": "Weekend showroom closing incentive within salesperson desk authority"
+                }
+              },
+              {
+                "name": "verify_dealership_floor_margin",
+                "args": {
+                  "vehicle_identifier": "3TMLB5JN1TS100023",
+                  "proposed_selling_price": 43100.0
+                }
+              },
+              {
+                "name": "generate_customer_offer_sheet",
+                "args": {
+                  "customer_name": "Truck Towing Buyer",
+                  "best_match_vin": "3TMLB5JN1TS100023",
+                  "value_pick_vin": "3FTTW8E37SS100024",
+                  "upgrade_pick_vin": "1FTFW1ED5TS100022",
+                  "down_payment": 4000.0,
+                  "trade_in_equity": 0.0,
+                  "credit_score": 750,
+                  "loan_term_months": 60
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "### AutoDeal Copilot — Top 3 Pickup Truck Offers & Auto-Approved Desk Discount\n\n**Promotional Discount Decision:**\n- Status: **`APPROVED`** (`AUTO_SALESPERSON_AUTHORITY`, `requires_human_confirmation=False`)\n- Applied **$500.00** discount on 2026 Toyota Tacoma TRD Off-Road (`STK-2026-023` | Approved Price: **$43,100.00**, Floor Threshold: **$42,030.00**)\n\n1. **Best Overall Match — 2026 Toyota Tacoma TRD Off-Road 4WD (`STK-2026-023` | VIN `3TMLB5JN1TS100023`)**\n   - Selling Price: **$43,600.00** ($43,100.00 after $500 desk discount | Floor-Margin Compliant: PASS)\n   - Financing (60 mos @ **4.49% APR**, $4,000 down): **$738.12/mo** | 36-Mo Lease: **$486.20/mo**\n2. **Budget / Value Pick — 2025 Ford Maverick Hybrid XLT AWD (`STK-2025-024` | VIN `3FTTW8E37SS100024`)**\n   - Selling Price: **$32,150.00** (4K Tow Package, 38 MPG | Floor-Margin Compliant: PASS)\n   - Rebates Applied: **$1,250.00** (`REB-HYBRID-BONUS-2026`)\n   - Financing (60 mos @ **4.49% APR**, $4,000 down): **$501.34/mo** | 36-Mo Lease: **$312.50/mo**\n3. **Premium / Upgrade Pick — 2026 Ford F-150 XLT PowerBoost Hybrid 4WD (`STK-2026-022` | VIN `1FTFW1ED5TS100022`)**\n   - Selling Price: **$56,200.00** (Max Tow Package + Pro Power 7.2kW | Floor-Margin Compliant: PASS)\n   - Rebates Applied: **$1,250.00**\n   - Financing (60 mos @ **4.49% APR**, $4,000 down): **$949.70/mo** | 36-Mo Lease: **$624.15/mo**\n\n*Truth-in-Lending Act (Regulation Z) Disclosure: All financing terms reflect Tier 1 Super Prime (750 FICO) at 4.49% APR for 60 months subject to credit approval.*"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "eval_high_discount_hitl_gate",
+      "session_input": {
+        "app_name": "autodeal_copilot",
+        "user_id": "sales_consultant_01",
+        "state": {
+          "scenario_category": "hitl_sales_manager_approval_gate"
+        }
+      },
+      "conversation": [
+        {
+          "invocation_id": "inv_high_discount_hitl_gate_005",
+          "user_content": {
+            "role": "user",
+            "parts": [
+              {
+                "text": "Apply a manager special discount of $2,800 off on the 2026 Toyota Highlander Hybrid XLE (STK-2026-001) to beat a competing quote for a family buyer (745 FICO, $4,000 down)."
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "search_dealership_inventory",
+                "args": {
+                  "body_style": "suv",
+                  "max_price": 50000.0,
+                  "min_seating": 7,
+                  "fuel_type": "hybrid",
+                  "limit": 8
+                }
+              },
+              {
+                "name": "apply_manager_special_discount",
+                "args": {
+                  "vehicle_identifier": "STK-2026-001",
+                  "requested_discount_amount": 2800.0,
+                  "reason": "Customer presented rival dealer quote requiring $2,800 manager concession"
+                }
+              },
+              {
+                "name": "verify_dealership_floor_margin",
+                "args": {
+                  "vehicle_identifier": "5TDKDRBH1TS100001",
+                  "proposed_selling_price": 46800.0
+                }
+              },
+              {
+                "name": "generate_customer_offer_sheet",
+                "args": {
+                  "customer_name": "Competing Quote Buyer",
+                  "best_match_vin": "KM8R5DGE9TS100007",
+                  "value_pick_vin": "5TDKDRBH8RS100008",
+                  "upgrade_pick_vin": "5TDKDRBH1TS100001",
+                  "down_payment": 4000.0,
+                  "trade_in_equity": 0.0,
+                  "credit_score": 745,
+                  "loan_term_months": 60
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "### HUMAN-IN-THE-LOOP STOP: `PENDING_MANAGER_APPROVAL` (`HITL-STK-2026-001-2800`)\n\n- **Requested Concession:** **$2,800.00** off 2026 Toyota Highlander Hybrid XLE (`STK-2026-001` | VIN `5TDKDRBH1TS100001`)\n- **Governance Trigger:** Exceeds the **$1,500.00** salesperson desk authority cap and reduces proposed price (**$44,000.00**) below the dealer floor-margin threshold (**$44,890.00** = Invoice $44,390.00 + $500.00 minimum margin).\n- **Action Required (`requires_human_confirmation=True`):** Have the Sales Manager review the deal and provide an authorization token (`manager_approval_token='MGR-APPROVED-<CODE>'`) before locking the discounted price.\n\n### Compliant Baseline Top 3 Family Hybrid SUV Offers (At Authorized Selling Prices)\n1. **Best Overall Match — 2026 Hyundai Santa Fe Hybrid SEL (`STK-2026-007` | VIN `KM8R5DGE9TS100007`)** — Selling Price: **$39,400.00** | 60-Mo Finance @ **4.49% APR**: **$622.18/mo** (Floor-Margin Compliant: PASS)\n2. **Budget / Value Pick — 2024 Toyota Highlander Hybrid LE CPO (`STK-2024-008` | VIN `5TDKDRBH8RS100008`)** — Selling Price: **$37,900.00** | 60-Mo Finance @ **4.49% APR**: **$575.56/mo** (Floor-Margin Compliant: PASS)\n3. **Premium / Upgrade Pick — 2026 Toyota Highlander Hybrid XLE (`STK-2026-001` | VIN `5TDKDRBH1TS100001`)** — Authorized Selling Price: **$46,800.00** | 60-Mo Finance @ **4.49% APR**: **$760.14/mo** (Floor-Margin Compliant: PASS)\n\n*Truth-in-Lending Act (Regulation Z) Disclosure: All financing estimates assume Tier 1 Super Prime (745 FICO) at 4.49% APR for 60 months subject to credit approval.*"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
