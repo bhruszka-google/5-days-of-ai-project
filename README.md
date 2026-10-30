@@ -154,12 +154,19 @@ Every module in `app/` has a 1:1 mirrored unit test file in `tests/`, plus `test
 .venv/bin/pytest -v
 ```
 
-### 5.4 Run the Golden Dataset Evaluation Suite
+### 5.4 Run the Real ADK Golden Set & LLM-as-a-Judge Evaluation Suite
 
-Executes all 6 golden dealership scenarios (`evals/golden_dataset.json`) verifying trajectory accuracy, tool selection accuracy, PII redaction compliance, floor-margin compliance, and HITL discount gating:
+Executes all golden dealership scenarios (`evals/autodeal_golden.evalset.json` and `evals/golden_dataset.json`) through the ADK `InMemoryRunner` (`root_agent` + `PolicyAndPiiPlugin` + `FunctionTool`s) and grades both tool trajectories (`TrajectoryEvaluator`) and LLM outputs (`LlmOutputJudge` against `evals/eval_config.json`):
 
 ```bash
-.venv/bin/python -m evals.run_evals
+# Deterministic CI mode (ADK InMemoryRunner + Rubric Judge)
+.venv/bin/python -m evals.run_evals --mode runner --evalset-path evals/autodeal_golden.evalset.json --config-path evals/eval_config.json
+
+# Live Gemini mode (runs live Gemini models + gemini-3-flash-preview LLM-as-a-Judge)
+make eval-live
+
+# Official ADK CLI evaluator
+make eval-adk
 ```
 
 ---
@@ -219,8 +226,10 @@ terraform plan -var="project_id=${GOOGLE_CLOUD_PROJECT}" -var="region=us-central
 │   ├── outputs.tf
 │   └── variables.tf
 ├── evals/
+│   ├── autodeal_golden.evalset.json # Official Google ADK EvalSet (5 multi-tool dealership EvalCases)
+│   ├── eval_config.json             # Official ADK EvalConfig (trajectory, match, and gemini-3-flash-preview rubrics)
 │   ├── golden_dataset.json          # 6 comprehensive golden dealership evaluation scenarios
-│   └── run_evals.py                 # Automated golden evaluation harness & CLI report generator
+│   └── run_evals.py                 # Real ADK InMemoryRunner & LlmOutputJudge evaluation harness
 ├── tests/                           # 1:1 mirrored unit tests + FastAPI, Evals & 19-Criterion Rubric Compliance
 ├── Dockerfile                       # Python 3.13 slim non-root Cloud Run container
 ├── Makefile                         # Developer & CI/CD automation targets

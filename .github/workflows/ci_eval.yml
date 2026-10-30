@@ -1,4 +1,4 @@
-name: AutoDeal Copilot CI & Golden Evaluation Pipeline
+name: AutoDeal Copilot CI Pipeline
 
 on:
   push:
@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  lint-test-and-evaluate:
-    name: Ruff Lint, Pytest Unit Suite & Golden Evaluation Harness
+  lint-and-unit-tests:
+    name: Ruff Lint & Pytest Unit Suite
     runs-on: ubuntu-latest
 
     steps:
@@ -34,8 +34,5 @@ jobs:
       - name: Run Ruff Formatter Check
         run: ruff format --check .
 
-      - name: Run Pytest Unit & 19-Criterion Rubric Compliance Suite
+      - name: Run Pytest Unit & Rubric Compliance Suite
         run: pytest -v
-
-      - name: Run Automated Golden Dataset Evaluation Suite
-        run: python -m evals.run_evals

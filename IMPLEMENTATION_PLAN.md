@@ -108,3 +108,9 @@ Every source module in `app/` has a 1:1 mirrored unit test file in `tests/` enfo
   - `evals/golden_dataset.json` & `evals/run_evals.py` ↔ `tests/test_evals.py`
   - `app/fast_api_app.py` ↔ `tests/test_fast_api_app.py`
   - `deployment/terraform/`, `terraform/`, `Dockerfile`, `Makefile`, `.github/workflows/ci_eval.yml`, `README.md` ↔ `tests/test_rubric_compliance.py`
+- [x] **Delivery 7: Real ADK Golden Set & Live LLM-as-a-Judge Evaluation**
+  - `evals/autodeal_golden.evalset.json` & `evals/eval_config.json` (ADK `EvalSet`, `EvalCase`, `Invocation`, `IntermediateData`, `tool_trajectory_avg_score`, `response_match_score`, and `rubric_based_final_response_quality_v1`)
+  - `evals/run_evals.py` ↔ `tests/test_evals.py` (executes real ADK `InMemoryRunner` / `AgentEvaluator` against `root_agent` and grades actual LLM outputs with LLM-as-a-Judge + trajectory verification)
+- [ ] **Delivery 8: Turnkey Google Cloud Deployment Suite (Gated on Explicit User Approval)**
+  - `app/deploy.py` ↔ `tests/test_deploy.py` (Vertex AI Agent Runtime `vertexai.Client().agent_engines.create` / update + Cloud Run deployment orchestrator with `--dry-run`, `--verify`, and `--delete` modes)
+  - `deployment/deploy_cloud.sh` & `Makefile` deployment targets (`make deploy-dry-run`, `make deploy-cloud-run`, `make deploy-agent-engine`) — strictly non-executing until user approval
