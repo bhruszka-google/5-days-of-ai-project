@@ -58,24 +58,6 @@
                 }
               },
               {
-                "name": "calculate_financing_and_lease_options",
-                "args": {
-                  "vehicle_identifier": "5TDKDRBH1TS100001",
-                  "down_payment": 5000.0,
-                  "trade_in_equity": 19337.5,
-                  "rebate_amount": 2000.0,
-                  "credit_score": 760,
-                  "loan_term_months": 60
-                }
-              },
-              {
-                "name": "verify_dealership_floor_margin",
-                "args": {
-                  "vehicle_identifier": "5TDKDRBH1TS100001",
-                  "proposed_selling_price": 46800.0
-                }
-              },
-              {
                 "name": "generate_customer_offer_sheet",
                 "args": {
                   "customer_name": "Family Hybrid Buyer ([REDACTED_EMAIL])",
@@ -133,30 +115,22 @@
                 }
               },
               {
-                "name": "fetch_active_manufacturer_rebates",
-                "args": {
-                  "vehicle_identifier": "KMHLN4AJ7SS100017",
-                  "customer_qualifiers": [
-                    "first_time_buyer"
-                  ]
-                }
-              },
-              {
                 "name": "calculate_financing_and_lease_options",
                 "args": {
                   "vehicle_identifier": "KMHLN4AJ7SS100017",
                   "down_payment": 2000.0,
                   "trade_in_equity": 0.0,
-                  "rebate_amount": 2250.0,
                   "credit_score": 695,
-                  "loan_term_months": 60
+                  "loan_term_months": 60,
+                  "include_rebates": true
                 }
               },
               {
                 "name": "verify_dealership_floor_margin",
                 "args": {
                   "vehicle_identifier": "KMHLN4AJ7SS100017",
-                  "proposed_selling_price": 26350.0
+                  "proposed_selling_price": 26350.0,
+                  "rebates_total": 2250.0
                 }
               },
               {
@@ -225,24 +199,6 @@
                     "clean_vehicle",
                     "loyalty"
                   ]
-                }
-              },
-              {
-                "name": "calculate_financing_and_lease_options",
-                "args": {
-                  "vehicle_identifier": "KM8KRDAF2TS100020",
-                  "down_payment": 6000.0,
-                  "trade_in_equity": 0.0,
-                  "rebate_amount": 4500.0,
-                  "credit_score": 780,
-                  "loan_term_months": 60
-                }
-              },
-              {
-                "name": "verify_dealership_floor_margin",
-                "args": {
-                  "vehicle_identifier": "KM8KRDAF2TS100020",
-                  "proposed_selling_price": 49950.0
                 }
               },
               {

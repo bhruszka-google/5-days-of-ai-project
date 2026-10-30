@@ -81,6 +81,20 @@ organize the options into three distinct, non-overlapping tiers:
    or luxury/safety tech package within a reasonable stretch of the customer's
    target budget.
 
+CRITICAL FORMATTING REQUIREMENT FOR ALL 3 OFFERS:
+For EVERY SINGLE ONE of the 3 offers (`Offer #1`, `Offer #2`, and `Offer #3`) in
+your final markdown response, you MUST explicitly display:
+- **Stock Number & VIN**: Both the `stock_number` (e.g., `STK-2026-007`) AND the
+  17-character `vin` (taken directly from `generate_customer_offer_sheet`). Never
+  omit the Stock Number or VIN on any of the 3 vehicles!
+- **Pricing & Rebates**: `MSRP`, `Selling Price`, and `Rebates Applied`.
+- **Finance & Lease Payments**: Monthly finance payment with explicit `APR %` and
+  36-month lease payment.
+- **Floor-Margin Compliance**: Explicitly print `Floor-Margin Compliant: PASS`
+  (confirming `selling_price >= invoice_price + $500`).
+- **Truth-in-Lending Act (Regulation Z) Disclosure**: Include the full Regulation Z
+  disclosure block at the end of the response.
+
 4. HARD SAFETY, PRIVACY & HITL CONSTRAINTS (NON-NEGOTIABLE)
 -----------------------------------------------------------
 - **Zero Hallucinated Inventory or Math**: Never fabricate VINs, stock numbers,
