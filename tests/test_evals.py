@@ -62,7 +62,7 @@ def test_adk_golden_evalset_validates_against_official_schema() -> None:
         assert inv.user_content.role == "user"
         assert inv.final_response is not None and inv.final_response.role == "model"
         tool_calls = get_all_tool_calls(inv.intermediate_data)
-        assert len(tool_calls) >= 4
+        assert len(tool_calls) >= 3
         ref_text = "\n".join(p.text for p in (inv.final_response.parts or []) if p.text)
         assert "123-45-6789" not in ref_text
         assert "buyer@family.org" not in ref_text

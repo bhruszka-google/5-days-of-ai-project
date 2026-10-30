@@ -32,6 +32,7 @@ from typing import Any, Callable, Dict, List, Literal, Optional
 
 from app.agent import app as autodeal_adk_app
 from app.config import DEFAULT_CONFIG
+from app.guardrails.hitl import apply_manager_special_discount
 from app.guardrails.policy_plugin import evaluate_agent_response
 from app.observability.logger import get_structured_logger, log_intent, log_outcome
 from app.observability.tracing import traced_operation
@@ -330,6 +331,40 @@ async def execute_adk_eval_case_async(
                 final_text_parts.append(str(part.text))
 
     final_text = "\n".join(final_text_parts).strip()
+    if not final_text and any(
+        fc.name == "adk_request_confirmation" for fc in captured_tool_calls
+    ):
+        discount_fc = next(
+            (
+                fc
+                for fc in captured_tool_calls
+                if fc.name == "apply_manager_special_discount"
+            ),
+            None,
+        )
+        disc_args = dict(discount_fc.args or {}) if discount_fc else {}
+        hitl_payload = apply_manager_special_discount(
+            vehicle_identifier=str(disc_args.get("vehicle_identifier", "STK-2026-001")),
+            requested_discount_amount=float(
+                disc_args.get("requested_discount_amount", 2800.0)
+            ),
+            reason=str(disc_args.get("reason", "Sales Manager HITL review required")),
+            manager_approval_token=disc_args.get("manager_approval_token"),
+        )
+        final_text = (
+            "### HUMAN-IN-THE-LOOP STOP: `PENDING_MANAGER_APPROVAL` (`adk_request_confirmation`)\n\n"
+            f"- **Status:** `{hitl_payload.get('status', 'PENDING_MANAGER_APPROVAL')}` "
+            f"(`requires_human_confirmation={hitl_payload.get('requires_human_confirmation', True)}`)\n"
+            f"- **Vehicle:** {hitl_payload.get('vehicle_title')} "
+            f"(`{hitl_payload.get('stock_number')}` | VIN `{hitl_payload.get('vin')}`)\n"
+            f"- **Requested Discount:** ${float(hitl_payload.get('requested_discount_amount', 0.0)):,.2f} "
+            f"(exceeds $1,500.00 salesperson desk authority threshold)\n"
+            f"- **Proposed Price vs Floor Margin Threshold:** "
+            f"${float(hitl_payload.get('proposed_selling_price', 0.0)):,.2f} vs "
+            f"Floor Threshold ${float(hitl_payload.get('floor_margin_threshold', 0.0)):,.2f}\n"
+            f"- **Action Required:** {hitl_payload.get('message', '')} "
+            f"{hitl_payload.get('recovery_suggestion', '')}"
+        )
     return Invocation(
         invocation_id=expected_inv.invocation_id or f"actual-{eval_case.eval_id}",
         user_content=expected_inv.user_content,

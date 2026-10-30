@@ -310,29 +310,11 @@
                 }
               },
               {
-                "name": "calculate_financing_and_lease_options",
-                "args": {
-                  "vehicle_identifier": "3TMLB5JN1TS100023",
-                  "down_payment": 4000.0,
-                  "trade_in_equity": 0.0,
-                  "rebate_amount": 0.0,
-                  "credit_score": 750,
-                  "loan_term_months": 60
-                }
-              },
-              {
                 "name": "apply_manager_special_discount",
                 "args": {
                   "vehicle_identifier": "3TMLB5JN1TS100023",
                   "requested_discount_amount": 500.0,
                   "reason": "Weekend showroom closing incentive within salesperson desk authority"
-                }
-              },
-              {
-                "name": "verify_dealership_floor_margin",
-                "args": {
-                  "vehicle_identifier": "3TMLB5JN1TS100023",
-                  "proposed_selling_price": 43100.0
                 }
               },
               {
@@ -384,13 +366,9 @@
           "intermediate_data": {
             "tool_uses": [
               {
-                "name": "search_dealership_inventory",
+                "name": "transfer_to_agent",
                 "args": {
-                  "body_style": "suv",
-                  "max_price": 50000.0,
-                  "min_seating": 7,
-                  "fuel_type": "hybrid",
-                  "limit": 8
+                  "agent_name": "deal_desk_closer"
                 }
               },
               {
@@ -402,23 +380,11 @@
                 }
               },
               {
-                "name": "verify_dealership_floor_margin",
+                "name": "adk_request_confirmation",
                 "args": {
-                  "vehicle_identifier": "5TDKDRBH1TS100001",
-                  "proposed_selling_price": 46800.0
-                }
-              },
-              {
-                "name": "generate_customer_offer_sheet",
-                "args": {
-                  "customer_name": "Competing Quote Buyer",
-                  "best_match_vin": "KM8R5DGE9TS100007",
-                  "value_pick_vin": "5TDKDRBH8RS100008",
-                  "upgrade_pick_vin": "5TDKDRBH1TS100001",
-                  "down_payment": 4000.0,
-                  "trade_in_equity": 0.0,
-                  "credit_score": 745,
-                  "loan_term_months": 60
+                  "originalFunctionCall": {
+                    "name": "apply_manager_special_discount"
+                  }
                 }
               }
             ]
